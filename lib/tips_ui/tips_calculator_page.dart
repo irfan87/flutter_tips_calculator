@@ -46,7 +46,7 @@ class _TipsCalculatorPageState extends State<TipsCalculatorPage> {
                     Padding(
                       padding: const EdgeInsets.all(12.0),
                       child: Text(
-                        "\$123",
+                        "\$ ${calculateTotalPerPerson(_billAmmount, _personCounter, _tipsPercentage)}",
                         style: TextStyle(
                             fontSize: 34.0,
                             fontWeight: FontWeight.bold,
@@ -171,7 +171,7 @@ class _TipsCalculatorPageState extends State<TipsCalculatorPage> {
                       Padding(
                         padding: const EdgeInsets.all(18.0),
                         child: Text(
-                          "\$32",
+                          "\$  ${(calculateTotalTip(_billAmmount, _personCounter, _tipsPercentage).toStringAsFixed(2))}",
                           style: TextStyle(
                               color: _magenta,
                               fontSize: 17.0,
@@ -213,5 +213,24 @@ class _TipsCalculatorPageState extends State<TipsCalculatorPage> {
         ),
       ),
     );
+  }
+
+  calculateTotalPerPerson(double billAmount, int splitBy, int tipPercentage) {
+    var totalPerPerson =
+        (calculateTotalTip(billAmount, splitBy, tipPercentage) + billAmount) /
+            splitBy;
+
+    return totalPerPerson.toStringAsFixed(2);
+  }
+
+  calculateTotalTip(double billAmount, int splitBy, int tipPercentage) {
+    double totalTip = 0.0;
+
+    if (billAmount < 0 || billAmount.toString().isEmpty || billAmount == null) {
+    } else {
+      totalTip = (billAmount * tipPercentage) / 100;
+    }
+
+    return totalTip;
   }
 }
