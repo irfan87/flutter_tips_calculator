@@ -12,6 +12,7 @@ class _TipsCalculatorPageState extends State<TipsCalculatorPage> {
   double _billAmmount = 0.0;
 
   Color _magenta = HexColor("#e83a74");
+  Color _white = HexColor("#FFFFFF");
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +35,25 @@ class _TipsCalculatorPageState extends State<TipsCalculatorPage> {
               child: Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[Text("Total Per Person"), Text("\$123")],
+                  children: <Widget>[
+                    Text(
+                      "Total Per Person",
+                      style: TextStyle(
+                          fontWeight: FontWeight.normal,
+                          fontSize: 15,
+                          color: _magenta),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Text(
+                        "\$123",
+                        style: TextStyle(
+                            fontSize: 34.0,
+                            fontWeight: FontWeight.bold,
+                            color: _magenta),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -55,7 +74,10 @@ class _TipsCalculatorPageState extends State<TipsCalculatorPage> {
                     style: TextStyle(color: _magenta),
                     decoration: InputDecoration(
                         prefixText: "Bill Ammount",
-                        prefixIcon: Icon(Icons.attach_money)),
+                        prefixIcon: Icon(
+                          Icons.attach_money,
+                          color: _magenta,
+                        )),
                     onChanged: (String value) {
                       try {
                         _billAmmount = double.parse(value);
@@ -63,6 +85,126 @@ class _TipsCalculatorPageState extends State<TipsCalculatorPage> {
                         _billAmmount = 0.0;
                       }
                     },
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        "Split",
+                        style: TextStyle(color: Colors.grey.shade700),
+                      ),
+                      Row(
+                        children: <Widget>[
+                          InkWell(
+                            onTap: () {
+                              setState(() {
+                                if (_personCounter > 1) {
+                                  _personCounter--;
+                                } else {
+                                  // do nothing
+                                }
+                              });
+                            },
+                            child: Container(
+                              width: 40.0,
+                              height: 40.0,
+                              margin: EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(7.0),
+                                color: _magenta.withOpacity(1.0),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  "-",
+                                  style: TextStyle(
+                                      color: _white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 17.0),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Text(
+                            "$_personCounter",
+                            style: TextStyle(
+                                color: _magenta,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 17.0),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              setState(() {
+                                _personCounter++;
+                              });
+                            },
+                            child: Container(
+                              width: 40.0,
+                              height: 40.0,
+                              margin: EdgeInsets.all(10.0),
+                              decoration: BoxDecoration(
+                                color: _magenta.withOpacity(1.0),
+                                borderRadius: BorderRadius.circular(7.0),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  "+",
+                                  style: TextStyle(
+                                      color: _white,
+                                      fontSize: 17.0,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        "Tips",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 17.0),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(18.0),
+                        child: Text(
+                          "\$32",
+                          style: TextStyle(
+                              color: _magenta,
+                              fontSize: 17.0,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Column(
+                    children: <Widget>[
+                      Text(
+                        "$_tipsPercentage%",
+                        style: TextStyle(
+                            color: _magenta,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 17.0),
+                      ),
+                      Slider(
+                        min: 0,
+                        max: 100,
+                        activeColor: _magenta,
+                        inactiveColor: Colors.grey,
+                        // divisions: 10,
+                        value: _tipsPercentage.toDouble(),
+                        onChanged: (double value) {
+                          setState(
+                            () {
+                              _tipsPercentage = value.round();
+                            },
+                          );
+                        },
+                      )
+                    ],
                   )
                 ],
               ),
